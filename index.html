@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для моей самой любимой</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fceaf0 0%, #f9d5e5 100%);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 350px;
+            width: 85%;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffb6c1;
+            margin-bottom: 15px;
+        }
+
+        .iq-badge {
+            background: #ffb6c1;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        #message-box {
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        #support-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+            transition: opacity 0.3s;
+        }
+
+        .btn {
+            background: #ff8fab;
+            color: white;
+            padding: 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.4);
+            transition: 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Стиль для видео */
+        #video-container {
+            display: none;
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Сердечки */
+        .heart {
+            position: absolute;
+            color: #ff8fab;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: float 3s linear forwards;
+            z-index: 5;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="photo.jpg" alt="Самая красивая" class="profile-pic">
+    
+    <div class="iq-badge">Интеллект: 108 | Моя любовь: ∞</div>
+    
+    <div id="message-box">
+        <p id="support-text">Привет! Если тебе сейчас грустно или одиноко — нажми на кнопку ❤️</p>
+    </div>
+    
+    <button class="btn" onclick="giveSupport()">Нажми, если грустишь</button>
+
+    <div id="video-container">
+        <video id="myVideo" controls>
+            <source src="support.mp4" type="video/mp4">
+            Твой браузер не поддерживает видео.
+        </video>
+        <p style="font-size: 12px; color: #888; margin-top: 10px;">Я тут рядом милая и готов всегда поддержать</p>
+    </div>
+</div>
+
+<script>
+    const phrases = [
+        "Ты самая умная, и никакой тест этого не изменит!",
+        "Ты не одна, я рядом.",
+        "Просто помни: я тобой очень горжусь!",
+        "Для меня ты номер один",
+        "Закрой глаза и представь, что я тебя обнимаю."
+    ];
+
+    let clickCount = 0;
+
+    function giveSupport() {
+        clickCount++;
+        const textElement = document.getElementById('support-text');
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('myVideo');
+        
+        // Рандомная фраза
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+        
+        textElement.style.opacity = 0;
+        
+        setTimeout(() => {
+            textElement.innerText = randomPhrase;
+            textElement.style.opacity = 1;
+            createHeart();
+        }, 300);
+
+        // После 3-го нажатия показываем видео
+        if (clickCount >= 3) {
+            videoContainer.style.display = 'block';
+            // Если видео еще не играет, можно запустить (некоторые браузеры блокируют автоплей)
+            // video.play(); 
+        }
+    }
+
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = '90vh';
+        heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => { heart.remove(); }, 3000);
+    }
+</script>
+
+</body>
+</html>
