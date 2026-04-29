@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для моей самой любимой</title>
+    <title>Золото моё хехе теперь тут наш таймер</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-       body {
+        body {
             margin: 0;
-            padding: 20px 0; /* Добавили отступы сверху и снизу */
+            padding: 20px 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Изменили, чтобы контент начинался сверху */
+            align-items: flex-start;
             min-height: 100vh;
-            background: #fceaf0; 
             background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
             font-family: 'Montserrat', sans-serif;
-            overflow-y: auto; /* РАЗРЕШАЕМ СКРОЛЛ */
-            -webkit-overflow-scrolling: touch; /* Плавный скролл на iPhone */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .container {
@@ -29,7 +28,7 @@
             width: 85%;
             text-align: center;
             z-index: 10;
-            margin: auto; /* Чтобы контейнер был по центру, пока он короткий */
+            margin: auto;
         }
 
         .profile-pic {
@@ -49,7 +48,27 @@
             font-size: 13px;
             font-weight: 600;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* СТИЛИ ТАЙМЕРА */
+        .timer-container {
+            margin: 15px 0;
+            padding: 10px;
+            border-top: 1px solid #ffe4e8;
+            border-bottom: 1px solid #ffe4e8;
+        }
+        .timer-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ee9ca7;
+            margin-bottom: 5px;
+        }
+        #timer {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff8fab;
         }
 
         #message-box {
@@ -87,7 +106,6 @@
             transform: scale(0.95);
         }
 
-        /* Стиль для видео */
         #video-container {
             display: none;
             margin-top: 20px;
@@ -101,7 +119,6 @@
             display: block;
         }
 
-        /* Сердечки */
         .heart {
             position: absolute;
             color: #ff8fab;
@@ -124,9 +141,14 @@
     <img src="photo.jpg" alt="Самая красивая" class="profile-pic">
     
     <div class="iq-badge">Интеллект: 108 | Моя любовь: ∞</div>
+
+    <div class="timer-container">
+        <div class="timer-label">До встречи осталось: </div>
+        <div id="timer">Загрузка... самая милая</div>
+    </div>
     
     <div id="message-box">
-        <p id="support-text">Привет! Если тебе сейчас грустно или одиноко — нажми на кнопку ❤️</p>
+        <p id="support-text">Если грустно вот</p>
     </div>
     
     <button class="btn" onclick="giveSupport()">Нажми, если грустишь</button>
@@ -134,17 +156,39 @@
     <div id="video-container">
         <video id="myVideo" controls>
             <source src="support.mp4" type="video/mp4">
-            Твой браузер не поддерживает видео.
+            Твой браузер не поддерживает видео
         </video>
-        <p style="font-size: 12px; color: #888; margin-top: 10px;">Я тут рядом милая и готов всегда поддержать</p>
+        <p style="font-size: 12px; color: #888; margin-top: 10px;">Я всегда рядом, маленькая. Знай, что ты под моей защитой, и я во всём тебя поддержу</p>
     </div>
 </div>
 
 <script>
+    // ТАЙМЕР
+    function updateTimer() {
+        // Установи дату встречи: 2026 год, Июль (это 6-й месяц, в JS это 5), 1 число
+        const targetDate = new Date(2026, 6, 1, 0, 0, 0).getTime();
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('timer').innerText = `${d}д ${h}ч ${m}м ${s}с`;
+
+        if (diff < 0) {
+            document.getElementById('timer').innerText = "Я УЖЕ РЯДОМ! ❤️";
+        }
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // ПОДДЕРЖКА
     const phrases = [
         "Ты самая умная, и никакой тест этого не изменит!",
         "Ты не одна, я рядом.",
-        "Просто помни: я тобой очень горжусь!",
+        "Просто помни: я тобой очень горжусь умница моя",
         "Для меня ты номер один",
         "Закрой глаза и представь, что я тебя обнимаю."
     ];
@@ -155,9 +199,7 @@
         clickCount++;
         const textElement = document.getElementById('support-text');
         const videoContainer = document.getElementById('video-container');
-        const video = document.getElementById('myVideo');
         
-        // Рандомная фраза
         const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
         
         textElement.style.opacity = 0;
@@ -168,11 +210,8 @@
             createHeart();
         }, 300);
 
-        // После 3-го нажатия показываем видео
         if (clickCount >= 3) {
             videoContainer.style.display = 'block';
-            // Если видео еще не играет, можно запустить (некоторые браузеры блокируют автоплей)
-            // video.play(); 
         }
     }
 
